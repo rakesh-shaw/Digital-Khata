@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@mui/material";
+import { Card } from "@mui/material";
 import type { CardProps } from '@mui/material'
 import { motion } from "framer-motion";
 import type { MotionProps } from 'framer-motion'
@@ -6,7 +6,6 @@ import { forwardRef } from "react";
 
 type AppCardProps = CardProps & MotionProps & { clickable?: boolean };
 
-// Motion-wrapped MUI Card
 const MotionCard = motion(
   forwardRef<HTMLDivElement, CardProps>((props, ref) => <Card ref={ref} {...props} />)
 );

@@ -20,16 +20,12 @@ export default function LoginPage() {
 
   const validate = () => {
     let valid = true;
-
-    // Name validation
     if (!shopName.trim()) {
       setNameError("Name must not be empty");
       valid = false;
     } else {
       setNameError("");
     }
-
-    // Phone validation (optional)
     if (phone) {
       if (!/^\d+$/.test(phone)) {
         setPhoneError("Only numbers are allowed");
@@ -43,7 +39,6 @@ export default function LoginPage() {
     } else {
       setPhoneError("");
     }
-
     return valid;
   };
 
@@ -96,7 +91,6 @@ export default function LoginPage() {
             helperText={phoneError}
             autoFocus
           />
-
           <AppButton fullWidth onClick={handleLogin}>
             Continue
           </AppButton>

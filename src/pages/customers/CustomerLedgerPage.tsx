@@ -8,14 +8,11 @@ import {
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-
 import AppCard from "../../components/ui/AppCard";
 import AppButton from "../../components/ui/AppButton";
 import AppDialog from "../../components/ui/AppDialog";
 import PageTransition from "../../components/animations/PageTransition";
-import type { Customer } from "../dashboard/DashboardPage";
 
-/* ================= TYPES ================= */
 
 type Transaction = {
   id: string;
@@ -30,11 +27,9 @@ type LedgerState = {
   transactions: Transaction[];
 };
 
-/* ================= STORAGE HELPERS ================= */
-
 const getLedgerKey = (id: string) => `ledger_${id}`;
 
-const loadLedger = (customer: Customer): LedgerState => {
+const loadLedger = (customer: any): LedgerState => {
   const raw = localStorage.getItem(getLedgerKey(customer.id));
   if (!raw) {
     return {
@@ -49,26 +44,23 @@ const saveLedger = (id: string, data: LedgerState) => {
   localStorage.setItem(getLedgerKey(id), JSON.stringify(data));
 };
 
-/* ================= COMPONENT ================= */
 
 export default function CustomerLedgerPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const customer = state as Customer;
+  const customer = state as any;
 
   const [balance, setBalance] = useState<number>(customer.balance);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [amount, setAmount] = useState<number>(0);
   const [open, setOpen] = useState(false);
 
-  /* Load ledger on mount */
   useEffect(() => {
     const ledger = loadLedger(customer);
     setBalance(ledger.balance);
     setTransactions(ledger.transactions);
   }, [customer]);
 
-  /* Persist on change */
   useEffect(() => {
     saveLedger(customer.id, { balance, transactions });
   }, [balance, transactions, customer.id]);
@@ -117,12 +109,9 @@ export default function CustomerLedgerPage() {
         <AppButton variant="text" onClick={() => navigate(-1)}>
           ← Back
         </AppButton>
-
         <Typography variant="h5" fontWeight={600} mt={2}>
           {customer.name}
         </Typography>
-
-        {/* Balance */}
         <AppCard sx={{ mt: 3, p: 2 }}>
           <Typography variant="subtitle2">Current Balance</Typography>
           <Typography
@@ -133,8 +122,6 @@ export default function CustomerLedgerPage() {
             ₹{Math.abs(balance)} {balance < 0 ? "Due" : "Advance"}
           </Typography>
         </AppCard>
-
-        {/* Actions */}
         <Stack direction="row" spacing={2} mt={3}>
           <AppButton color="success" fullWidth onClick={() => setOpen(true)}>
             Credit
@@ -143,8 +130,6 @@ export default function CustomerLedgerPage() {
             Debit
           </AppButton>
         </Stack>
-
-        {/* Transactions */}
         <Typography variant="h6" mt={4} mb={1}>
           Transactions
         </Typography>
@@ -187,8 +172,6 @@ export default function CustomerLedgerPage() {
             </AppCard>
           </motion.div>
         ))}
-
-        {/* Dialog */}
         <AppDialog open={open} title="Enter Amount" onClose={() => setOpen(false)}>
           <TextField
             fullWidth

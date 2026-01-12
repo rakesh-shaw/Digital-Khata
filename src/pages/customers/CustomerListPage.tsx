@@ -50,7 +50,6 @@ export default function CustomerListPage() {
         <Typography variant="h5" sx={{ mb: 3, color: "#2563EB", fontWeight: 600 }}>
           Customers
         </Typography>
-
         <Box>
           {customers.map((customer, index) => (
             <motion.div
@@ -87,8 +86,6 @@ export default function CustomerListPage() {
             </motion.div>
           ))}
         </Box>
-
-        {/* Add Credit Modal */}
         <AppDialog
           open={openDialog}
           title={`Add Credit / Adjust Amount`}

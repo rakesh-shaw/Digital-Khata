@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 
 import AppButton from "../../components/ui/AppButton";
-// import type { Customer } from "../dashboard/DashboardPage";
 
 interface Props {
   open: boolean;
@@ -30,16 +29,12 @@ export default function AddCustomerDialog({
 
   const validate = () => {
     let valid = true;
-
-    // Name validation
     if (!name.trim()) {
       setNameError("Name must not be empty");
       valid = false;
     } else {
       setNameError("");
     }
-
-    // Phone validation (optional)
     if (phone) {
       if (!/^\d+$/.test(phone)) {
         setPhoneError("Only numbers are allowed");
@@ -53,7 +48,6 @@ export default function AddCustomerDialog({
     } else {
       setPhoneError("");
     }
-
     return valid;
   };
 
@@ -82,7 +76,6 @@ export default function AddCustomerDialog({
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
       <DialogTitle>Add Customer</DialogTitle>
-
       <DialogContent>
         <Stack spacing={2} mt={1}>
           <TextField
@@ -94,7 +87,6 @@ export default function AddCustomerDialog({
             autoFocus
             fullWidth
           />
-
           <TextField
             label="Phone (optional)"
             value={phone}
@@ -108,7 +100,6 @@ export default function AddCustomerDialog({
           />
         </Stack>
       </DialogContent>
-
       <DialogActions>
         <AppButton color="secondary" onClick={handleClose}>
           Cancel
