@@ -36,7 +36,6 @@ export default function CustomerDetailPage() {
 
  
   let runningBalance = 0;
-
   const ledgerWithBalance = transactions.map(tx => {
     if (tx.type === "debit") {
       runningBalance += tx.amount;   // customer owes more
