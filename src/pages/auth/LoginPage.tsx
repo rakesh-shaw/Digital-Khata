@@ -7,14 +7,44 @@ import PageTransition from "../../components/animations/PageTransition";
 export default function LoginPage() {
   const [shopName, setShopName] = useState("");
   const [phone, setPhone] = useState("");
+   const [nameError, setNameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = () => {
     if (shopName && phone) {
+      if(!validate) return
       navigate("/dashboard");
+    } 
+  };
+
+  const validate = () => {
+    let valid = true;
+
+    // Name validation
+    if (!shopName.trim()) {
+      setNameError("Name must not be empty");
+      valid = false;
     } else {
-      alert("Please enter both fields");
+      setNameError("");
     }
+
+    // Phone validation (optional)
+    if (phone) {
+      if (!/^\d+$/.test(phone)) {
+        setPhoneError("Only numbers are allowed");
+        valid = false;
+      } else if (phone.length !== 10) {
+        setPhoneError("Phone number must be 10 digits");
+        valid = false;
+      } else {
+        setPhoneError("");
+      }
+    } else {
+      setPhoneError("");
+    }
+
+    return valid;
   };
 
   return (
@@ -48,19 +78,23 @@ export default function LoginPage() {
 
           <TextField
             label="Shop Name"
-            variant="outlined"
             value={shopName}
             onChange={(e) => setShopName(e.target.value)}
+            error={!!nameError}
+            helperText={nameError}
+            autoFocus
             fullWidth
           />
 
           <TextField
             label="Phone Number"
-            variant="outlined"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             fullWidth
             type="tel"
+            error={!!phoneError}
+            helperText={phoneError}
+            autoFocus
           />
 
           <AppButton fullWidth onClick={handleLogin}>
