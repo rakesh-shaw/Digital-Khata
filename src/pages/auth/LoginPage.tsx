@@ -7,42 +7,51 @@ import PageTransition from "../../components/animations/PageTransition";
 export default function LoginPage() {
   const [shopName, setShopName] = useState("");
   const [phone, setPhone] = useState("");
-   const [nameError, setNameError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    if (shopName && phone) {
-      if(!validate) return
-      navigate("/dashboard");
-    } 
-  };
+  const [nameError, setNameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+
+  const navigate = useNavigate();
 
   const validate = () => {
     let valid = true;
+
+    // Shop name validation
     if (!shopName.trim()) {
-      setNameError("Name must not be empty");
+      setNameError("Shop name must not be empty");
       valid = false;
     } else {
       setNameError("");
     }
-    if (phone) {
-      if (!/^\d+$/.test(phone)) {
-        setPhoneError("Only numbers are allowed");
-        valid = false;
-      } else if (phone.length !== 10) {
-        setPhoneError("Phone number must be 10 digits");
-        valid = false;
-      } else {
-        setPhoneError("");
-      }
+
+    // Phone validation
+    if (!phone.trim()) {
+      setPhoneError("Phone number is required");
+      valid = false;
+    } else if (!/^\d+$/.test(phone)) {
+      setPhoneError("Phone number must contain only digits");
+      valid = false;
+    } else if (phone.length !== 10) {
+      setPhoneError("Phone number must be exactly 10 digits");
+      valid = false;
     } else {
       setPhoneError("");
     }
+
     return valid;
   };
 
+  const handleLogin = () => {
+    if (!validate()) return;
+    if (shopName === "admin" && phone === "1234567890") {
+      navigate("/dashboard");
+    } else {
+      setPhoneError("Invalid shop name or phone number");
+    }
+  };
+
   return (
+    <>
     <PageTransition>
       <Box
         sx={{
@@ -51,7 +60,7 @@ export default function LoginPage() {
           alignItems: "center",
           justifyContent: "center",
           p: 3,
-          backgroundColor: "#F3F4F6",
+          backgroundColor: "#f6f5f3",
         }}
       >
         <Box
@@ -67,35 +76,39 @@ export default function LoginPage() {
             gap: 2,
           }}
         >
-          <Typography variant="h5" sx={{ color: "#2563EB", fontWeight: 600, textAlign: "center" }}>
-            Welcome to Digital Khata
+          <Typography
+            variant="h5"
+            sx={{ color: "#2563EB", fontWeight: 600, textAlign: "center" }}
+          >
+            Welcome to Digital Khata 🧾
           </Typography>
-
           <TextField
             label="Shop Name"
             value={shopName}
             onChange={(e) => setShopName(e.target.value)}
             error={!!nameError}
             helperText={nameError}
-            autoFocus
             fullWidth
+            autoFocus
           />
 
           <TextField
             label="Phone Number"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            fullWidth
-            type="tel"
             error={!!phoneError}
             helperText={phoneError}
-            autoFocus
+            fullWidth
+            type="tel"
           />
+
           <AppButton fullWidth onClick={handleLogin}>
+            
             Continue
           </AppButton>
         </Box>
       </Box>
     </PageTransition>
+    </>
   );
 }
